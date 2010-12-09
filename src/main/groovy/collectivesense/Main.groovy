@@ -40,14 +40,14 @@ class Main {
 
         def matches = new Match().match(persons.first(), persons, pearson)
         matches.each {
-            println "$it.key.name: $it.value"
+            println "$it.item.name: $it.rate"
         }
 
         println '------------------------------------'
 
         def recommendations = new Recommendation().recommend(persons.first(), persons, pearson)
         recommendations.each {
-            println "$it.key: $it.value"
+            println "$it.item.name: $it.rate"
         }
     }
 }

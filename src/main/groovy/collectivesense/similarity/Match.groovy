@@ -1,6 +1,7 @@
 package collectivesense.similarity
 
 import collectivesense.Item
+import collectivesense.Rated
 
 /**
  * Gets the matches for specified item with other items in the list.
@@ -10,12 +11,13 @@ import collectivesense.Item
  */
 class Match {
 
-    Map<Item, BigDecimal> match(Item item, List<Item> items, Similarity similarity) {
-        def result = [:]
+    List<Rated> match(Item item, List<Item> items, Similarity similarity) {
+        def result = []
 
         for (eachItem in items) {
             if (eachItem.name != item.name) {
-                result[eachItem] = similarity.calculate(item, eachItem)
+                result << new Rated<Item>(item: eachItem,
+                        rate: similarity.calculate(item, eachItem))
             }
         }
 

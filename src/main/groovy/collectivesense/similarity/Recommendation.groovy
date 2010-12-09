@@ -2,6 +2,7 @@ package collectivesense.similarity
 
 import collectivesense.Item
 import collectivesense.ItemValue
+import collectivesense.Rated
 
 /**
  * @author Ruslan Khmelyuk
@@ -9,7 +10,8 @@ import collectivesense.ItemValue
  */
 class Recommendation {
 
-    Map<ItemValue, BigDecimal> recommend(Item item, List<Item> items, Similarity similarity) {
+    List<Rated> recommend(Item item, List<Item> items, Similarity similarity) {
+        def values = [:]
         def totals = [:]
         def simSums = [:]
 
@@ -21,20 +23,19 @@ class Recommendation {
                 }
 
                 eachItem.values.each { value ->
-                    if (!item.containsValueWithName(value.name)) {
-                        totals[value.name] = totals.get(value.name, 0) + value.rate * sim
-                        simSums[value.name] = simSums.get(value.name, 0) + sim
+                    def name = value.name
+                    if (!item.containsValueWithName(name)) {
+                        values[name] = value
+                        totals[name] = totals.get(name, 0) + value.rate * sim
+                        simSums[name] = simSums.get(name, 0) + sim
                     }
                 }
             }
         }
 
-        def result = [:]
-        totals.collect { key, value ->
-            result[key] = (value / simSums[key])
+        return totals.collect { key, value ->
+            new Rated<ItemValue>(item: values[key], rate: value / simSums[key])
         }
-
-        return result
     }
 
 }
