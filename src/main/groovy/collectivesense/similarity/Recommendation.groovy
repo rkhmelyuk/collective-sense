@@ -34,10 +34,11 @@ class Recommendation {
         }
 
         def result = totals.collect { key, value ->
-            new Rated<ItemValue>(item: values[key], rate: value / simSums[key])
+            def sim = simSums[key]
+            sim ? new Rated<ItemValue>(item: values[key], rate: value / sim) : null
         }
 
-        result.sort()
+        result.grep { it }.sort().reverse()
     }
 
 }

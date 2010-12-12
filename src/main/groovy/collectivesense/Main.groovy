@@ -50,7 +50,7 @@ class Main {
             println "$it.item.name: $it.rate"
         }*/
 
-        def similarItems = new SimilarItems().similarItems(stuff, 5, euclidean)
+        def similarItems = new SimilarItems().similarItems(stuff, 5, pearson)
         println similarItems[stuff.first()]
 
         def recommendedItems = new RecommendationItems().recommendationItems(persons, persons.first(), similarItems)

@@ -23,21 +23,24 @@ class RecommendationItems {
                 return null
             }
             for (rate in rates) {
-                def name = rate.item.name
-                if (item.containsValueWithName(name)) {
-                    continue
-                }
+                if (rate.rate) {
+                    def name = rate.item.name
+                    if (item.containsValueWithName(name)) {
+                        continue
+                    }
 
-                values[name] = rate.item
-                totalSims[name] = totalSims.get(name, 0) + rate.rate
-                scores[name] = scores.get(name, 0) + value.rate * rate.rate
+                    values[name] = rate.item
+                    totalSims[name] = totalSims.get(name, 0) + rate.rate
+                    scores[name] = scores.get(name, 0) + value.rate * rate.rate
+                }
             }
         }
 
         def result = scores.collect { key, value ->
-            new Rated<ItemValue>(item: values[key], rate: value / totalSims[key])
+            def sim = totalSims[key]
+            sim ? new Rated<ItemValue>(item: values[key], rate: value / sim) : null
         }
 
-        result.sort().reverse()
+        result.grep { it }.sort().reverse()
     }
 }

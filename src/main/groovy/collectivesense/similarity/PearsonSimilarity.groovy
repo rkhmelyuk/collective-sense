@@ -34,11 +34,14 @@ class PearsonSimilarity implements Similarity {
             }
         }
 
-        def den = Math.sqrt(sum1Sq - (sum1 ** 2) / n) * (sum2Sq - (sum2 ** 2) / n)
-        if (den == 0) {
+        if (n == 0) {
             return 0
         }
 
+        def den = Math.sqrt((sum1Sq - (sum1 ** 2) / n) * (sum2Sq - (sum2 ** 2) / n))
+        if (den == 0) {
+            return 0
+        }
 
         return (pSum - (sum1 * sum2 / n)) / den
     }
