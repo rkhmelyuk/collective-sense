@@ -11,7 +11,7 @@ import collectivesense.Rated
  */
 class Match {
 
-    List<Rated> match(Item item, List<Item> items, Similarity similarity) {
+    List<Rated> match(Item item, List<Item> items, int n, Similarity similarity) {
         def result = []
 
         for (eachItem in items) {
@@ -21,6 +21,12 @@ class Match {
             }
         }
 
-        return result
+        result.sort().reverse()
+
+        if (result.size() <= n) {
+            return result
+        }
+
+        return result[0..n]
     }
 }

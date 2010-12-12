@@ -33,9 +33,11 @@ class Recommendation {
             }
         }
 
-        return totals.collect { key, value ->
+        def result = totals.collect { key, value ->
             new Rated<ItemValue>(item: values[key], rate: value / simSums[key])
         }
+
+        result.sort()
     }
 
 }

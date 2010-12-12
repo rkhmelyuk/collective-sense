@@ -18,8 +18,9 @@ class EuclideanDistanceSimilarity implements Similarity{
         def sum = 0
         for (def value1 in left.values) {
             def value2 = right.getValueByName(value1.name)
-
-            sum += (value1.rate - value2.rate) ** 2
+            if (value2) {
+                sum += (value1.rate - value2.rate) ** 2
+            }
         }
 
         return 1 / (1 + sum)
