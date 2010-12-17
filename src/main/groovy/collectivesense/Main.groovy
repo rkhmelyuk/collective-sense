@@ -1,5 +1,6 @@
 package collectivesense
 
+import collectivesense.cluster.ArticleMatrixBuilder
 import collectivesense.cluster.KCluster
 import collectivesense.similarity.EuclideanDistanceSimilarity
 import collectivesense.similarity.PearsonSimilarity
@@ -21,9 +22,9 @@ class Main {
     private static def cluster() {
         def helper = new MedlineHelper()
         def records = helper.readText('/home/ruslan/projects/collectivesense/records.txt')
-        //def matrix = new ArticleMatrixBuilder().build(records)
+        def matrix = new ArticleMatrixBuilder().build(records)
 
-        def matrix = [:]
+        /*def matrix = [:]
         matrix[0] = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
         matrix[1] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         matrix[2] = [1, 2, 4, 1, 3, 1, 0, 4, 5, 1, 3]
@@ -33,7 +34,7 @@ class Main {
         matrix[6] = [1, 2, 0, 5, 5, 3, 0, 4, 5, 1, 3]
         matrix[7] = [1, 2, 2, 7, 9, 1, 3, 2, 2, 0, 32]
         matrix[8] = [3, 2, 3, 3, 3, 3, 0, 3, 5, 0, 3]
-        matrix[9] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        matrix[9] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]*/
 
         def cluster = new KCluster()
         def result = cluster.cluster(matrix)

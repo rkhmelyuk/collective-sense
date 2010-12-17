@@ -10,6 +10,7 @@ class KCluster {
 
         def ranges = []
 
+        def keys = matrix.keySet().toList()
         def rows = matrix.values().toList()
         def size = rows[0].size()
         for (int i = 0; i < size; i++) {
@@ -26,7 +27,7 @@ class KCluster {
         }
 
         def lastMatches = null
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             println "Iteration $i"
 
             def bestMatches = (0..<k).collect { [] }
@@ -65,12 +66,16 @@ class KCluster {
         }
 
         lastMatches.each {
-            println "$it.size: $it"
+            println "$it.size: "
+            it.each { id ->
+                print keys[id]
+                print ','
+            }
+            println()
         }
     }
 
     def distance(List row1, List row2) {
-
         def n = 0
         def sum1 = 0.0
         def sum2 = 0.0

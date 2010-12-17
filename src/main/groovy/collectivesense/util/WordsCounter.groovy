@@ -10,8 +10,13 @@ class WordsCounter {
 
     Map<String, Integer> count(String text) {
         def result = [:].withDefault {0}
+        text = text.toLowerCase()
         def words = text.findAll(/\w+/)
-        words.each { result[it]++ }
+        words.each {
+            if (it.size() > 2) {
+                result[it]++
+            }
+        }
         return result
     }
 
