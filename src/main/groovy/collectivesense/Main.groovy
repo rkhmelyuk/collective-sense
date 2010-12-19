@@ -23,7 +23,7 @@ class Main {
     private static def cluster() {
         def helper = new MedlineHelper()
         def records = helper.readText('/home/ruslan/projects/collectivesense/records.txt')
-        def matrix = new ArticleMatrixBuilder().build(records)
+        def matrix = new ArticleMatrixBuilder().revert(records)
 
         def cluster =
                 //new KCluster()

@@ -53,8 +53,10 @@ class HierarchicalCluster {
     }
 
     def print(Map matrix, def cluster) {
-        def labels = new ArrayList(matrix.keySet())
-        printCluster(cluster, labels, 0)
+        if (cluster) {
+            def labels = new ArrayList(matrix.keySet())
+            printCluster(cluster, labels, 0)
+        }
     }
 
     private void printCluster(BiCluster cluster, List labels, int level) {
@@ -72,6 +74,5 @@ class HierarchicalCluster {
             printCluster(cluster.right, labels, level + 1)
         }
     }
-
 
 }
