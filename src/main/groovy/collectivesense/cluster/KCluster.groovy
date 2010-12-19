@@ -6,12 +6,11 @@ package collectivesense.cluster
  */
 class KCluster {
 
-    def cluster(Map<String, List> matrix, int k = 10) {
+    def cluster(Map<String, List> matrix, RowsDistance distance, int k = 10) {
 
         def ranges = []
 
-        def keys = matrix.keySet().toList()
-        def rows = matrix.values().toList()
+        def rows = new ArrayList(matrix.values())
         def size = rows[0].size()
         for (int i = 0; i < size; i++) {
             def rowValues = rows.collect { it[i] }
@@ -27,23 +26,23 @@ class KCluster {
         }
 
         def lastMatches = null
-        for (int i = 0; i < 100; i++) {
-            println "Iteration $i"
+        for (int iteration = 0; iteration < 10000; iteration++) {
+            println "Iteration $iteration"
 
             def bestMatches = (0..<k).collect { [] }
 
-            rows.eachWithIndex { row, index ->
+            rows.eachWithIndex { row, j ->
                 def bestMatch = 0
-                (0..<k).each {
-                    def d = distance(clusters[it], row)
-                    if (d < distance(clusters[bestMatch], row)) {
-                        bestMatch = it
+                (0..<k).each { i ->
+                    def d = distance.calculate(clusters[i], row)
+                    if (d < distance.calculate(clusters[bestMatch], row)) {
+                        bestMatch = i
                     }
                 }
-                bestMatches[bestMatch] << index
+                bestMatches[bestMatch] << j
             }
 
-            if (bestMatches == lastMatches) {
+            if (lastMatches && bestMatches.containsAll(lastMatches) && lastMatches.containsAll(bestMatches)) {
                 break
             }
 
@@ -65,7 +64,12 @@ class KCluster {
             }
         }
 
-        lastMatches.each {
+        return lastMatches
+    }
+
+    def print(Map matrix, def cluster) {
+        def keys = new ArrayList(matrix.keySet())
+        cluster.each {
             println "$it.size: "
             it.each { id ->
                 print keys[id]
@@ -73,37 +77,6 @@ class KCluster {
             }
             println()
         }
-    }
-
-    def distance(List row1, List row2) {
-        def n = 0
-        def sum1 = 0.0
-        def sum2 = 0.0
-        def sum1Sq = 0.0
-        def sum2Sq = 0.0
-        def pSum = 0.0
-        for (int i = 0; i < row1.size(); i++) {
-            def rate1 = row1[i]
-            def rate2 = row2[i]
-
-            sum1 += rate1
-            sum2 += rate2
-            sum1Sq += rate1 ** 2
-            sum2Sq += rate2 ** 2
-            pSum += rate1 * rate2
-            n++
-        }
-
-        if (n == 0) {
-            return 0
-        }
-
-        def den = Math.sqrt((double) (sum1Sq - (sum1 ** 2) / n) * (sum2Sq - (sum2 ** 2) / n))
-        if (den == 0) {
-            return 0
-        }
-
-        return (pSum - (sum1 * sum2 / n)) / den
     }
 
 }

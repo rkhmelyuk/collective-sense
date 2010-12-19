@@ -1,7 +1,8 @@
 package collectivesense
 
 import collectivesense.cluster.ArticleMatrixBuilder
-import collectivesense.cluster.KCluster
+import collectivesense.cluster.HierarchicalCluster
+import collectivesense.cluster.PearsonRowsDistance
 import collectivesense.similarity.EuclideanDistanceSimilarity
 import collectivesense.similarity.PearsonSimilarity
 import collectivesense.similarity.RecommendationItems
@@ -24,20 +25,16 @@ class Main {
         def records = helper.readText('/home/ruslan/projects/collectivesense/records.txt')
         def matrix = new ArticleMatrixBuilder().build(records)
 
-        /*def matrix = [:]
-        matrix[0] = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-        matrix[1] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        matrix[2] = [1, 2, 4, 1, 3, 1, 0, 4, 5, 1, 3]
-        matrix[3] = [1, 2, 3, 1, 9, 1, 0, 0, 5, 1, 13]
-        matrix[4] = [7, 2, 3, 2, 6, 0, 6, 4, 5, 9, 3]
-        matrix[5] = [1, 2, 1, 5, 8, 8, 0, 1, 1, 1, 3]
-        matrix[6] = [1, 2, 0, 5, 5, 3, 0, 4, 5, 1, 3]
-        matrix[7] = [1, 2, 2, 7, 9, 1, 3, 2, 2, 0, 32]
-        matrix[8] = [3, 2, 3, 3, 3, 3, 0, 3, 5, 0, 3]
-        matrix[9] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]*/
+        def cluster =
+                //new KCluster()
+                new HierarchicalCluster()
+        def distance =
+                //new TanamotoRowsDistance()
+                //new EuclideanRowsDistance()
+                new PearsonRowsDistance()
+        def result = cluster.cluster(matrix, distance, 4)
 
-        def cluster = new KCluster()
-        def result = cluster.cluster(matrix)
+        cluster.print(matrix, result)
     }
 
     private static def similarity() {
