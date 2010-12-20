@@ -1,7 +1,7 @@
 package collectivesense
 
 import collectivesense.cluster.ArticleMatrixBuilder
-import collectivesense.cluster.KCluster
+import collectivesense.cluster.HierarchicalCluster
 import collectivesense.cluster.PearsonRowsDistance
 import collectivesense.similarity.EuclideanDistanceSimilarity
 import collectivesense.similarity.PearsonSimilarity
@@ -26,8 +26,8 @@ class Main {
         def matrix = new ArticleMatrixBuilder().build(records)
 
         def cluster =
-                new KCluster()
-                //new HierarchicalCluster()
+                //new KCluster()
+                new HierarchicalCluster()
         def distance =
                 //new TanamotoRowsDistance()
                 //new EuclideanRowsDistance()
@@ -35,7 +35,7 @@ class Main {
                 new PearsonRowsDistance()
 
         def time = System.currentTimeMillis()
-        def result = cluster.cluster(matrix, distance, 4)
+        def result = cluster.cluster(matrix, distance)
         println "duration " + (System.currentTimeMillis() - time) + " ms"
 
         cluster.print(matrix, result)

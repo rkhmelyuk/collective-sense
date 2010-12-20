@@ -9,7 +9,7 @@ import collectivesense.util.WordsCounter
  */
 class ArticleMatrixBuilder {
 
-    Map build(List<ArticleRecord> records) {
+    Map<String, List> build(List<ArticleRecord> records) {
         def words = [:]
         def wordsCount = [:].withDefault { 0 }
 
@@ -41,7 +41,7 @@ class ArticleMatrixBuilder {
         return result
     }
 
-    Map revert(List<ArticleRecord> records) {
+    Map<String, List> revert(List<ArticleRecord> records) {
         def words = [:]
         def wordsCount = [:].withDefault { 0 }
 
