@@ -8,7 +8,7 @@ class KCluster {
 
     def cluster(Map<String, List> matrix, RowsDistance distance, int k = 10) {
 
-        def ranges = []
+        def ranges = [] as ArrayList
 
         def rows = new ArrayList(matrix.values())
         def size = rows[0].size()
@@ -23,7 +23,7 @@ class KCluster {
             ranges.collect { range ->
                 Math.random() * (range[1] - range[0]) + range[0]
             }
-        }
+        } as ArrayList
 
         def lastMatches = null
         for (int iteration = 0; iteration < 10000; iteration++) {

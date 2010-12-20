@@ -23,7 +23,7 @@ class ArticleMatrixBuilder {
             }
         }
 
-        def regardWords = []
+        def regardWords = []  as ArrayList
         wordsCount.each { word, count ->
             def rel = (float) count / records.size()
             if (rel >= 0.1 && rel <= 0.5) {
@@ -34,7 +34,7 @@ class ArticleMatrixBuilder {
         def result = [:].withDefault { 0 }
 
         words.each { title, articleWords ->
-            def vector = regardWords.collect { articleWords[it] }
+            def vector = regardWords.collect { articleWords[it] } as ArrayList
             result.put(title, vector)
         }
 
@@ -65,7 +65,7 @@ class ArticleMatrixBuilder {
 
         def result = [:].withDefault { 0 }
         for (word in regardWords) {
-            def vector = words.collect { key, value -> value[word] }
+            def vector = words.collect { key, value -> value[word] } as ArrayList
             result.put(word, vector)
         }
 

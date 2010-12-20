@@ -10,11 +10,11 @@ class HierarchicalCluster {
         def distances = [:]
         def currentClusterId = -1
 
-        def cluster = []
+        def cluster = [] as ArrayList
         matrix.eachWithIndex { entry, index -> cluster << new BiCluster(vec: entry.value, id: index) }
 
         while (cluster.size() > 1) {
-            def lowestPair = [0, 1]
+            def lowestPair = [0, 1] as ArrayList
             def closest = distance.calculate(cluster[0].vec, cluster[1].vec)
 
             for (int i = 0; i < cluster.size(); i++) {
@@ -28,12 +28,12 @@ class HierarchicalCluster {
 
                     if (d < closest) {
                         closest = d
-                        lowestPair = [i, j]
+                        lowestPair = [i, j] as ArrayList
                     }
                 }
             }
 
-            def mergeVec = []
+            def mergeVec = [] as ArrayList
             (cluster[0].vec.size()).times { i ->
                 mergeVec << ((BigDecimal) (cluster[lowestPair[0]].vec[i] + cluster[lowestPair[1]].vec[i])) / 2
             }

@@ -1,7 +1,7 @@
 package collectivesense
 
 import collectivesense.cluster.ArticleMatrixBuilder
-import collectivesense.cluster.HierarchicalCluster
+import collectivesense.cluster.KCluster
 import collectivesense.cluster.PearsonRowsDistance
 import collectivesense.similarity.EuclideanDistanceSimilarity
 import collectivesense.similarity.PearsonSimilarity
@@ -22,19 +22,24 @@ class Main {
 
     private static def cluster() {
         def helper = new MedlineHelper()
-        def records = helper.readText('/home/ruslan/projects/collectivesense/records.txt')
-        def matrix = new ArticleMatrixBuilder().revert(records)
+        def records = helper.readText('/home/ruslan/projects/collectivesense/records2.txt')
+        def matrix = new ArticleMatrixBuilder().build(records)
 
         def cluster =
-                //new KCluster()
-                new HierarchicalCluster()
+                new KCluster()
+                //new HierarchicalCluster()
         def distance =
                 //new TanamotoRowsDistance()
                 //new EuclideanRowsDistance()
+                //new PearsonRowsDistance()
                 new PearsonRowsDistance()
+
+        def time = System.currentTimeMillis()
         def result = cluster.cluster(matrix, distance, 4)
+        println "duration " + (System.currentTimeMillis() - time) + " ms"
 
         cluster.print(matrix, result)
+
     }
 
     private static def similarity() {
