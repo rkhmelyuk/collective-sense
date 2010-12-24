@@ -3,11 +3,8 @@ package collectivesense
 import collectivesense.cluster.ArticleMatrixBuilder
 import collectivesense.cluster.HierarchicalCluster
 import collectivesense.cluster.PearsonRowsDistance
-import collectivesense.similarity.EuclideanDistanceSimilarity
-import collectivesense.similarity.PearsonSimilarity
-import collectivesense.similarity.RecommendationItems
-import collectivesense.similarity.SimilarItems
 import collectivesense.test.MedlineHelper
+import collectivesense.similarity.*
 
 /**
  * @author Ruslan Khmelyuk
@@ -16,8 +13,8 @@ import collectivesense.test.MedlineHelper
 class Main {
 
     static void main(String... args) {
-        //similarity()
-        cluster()
+        similarity()
+        //cluster()
     }
 
     private static def cluster() {
@@ -69,20 +66,24 @@ class Main {
         def pearson = new PearsonSimilarity()
         def euclidean = new EuclideanDistanceSimilarity()
 
-        /*def matches = new Match().match(persons.first(), persons, 5, pearson)
+        def matches = new Match().match(persons.first(), persons, 5, euclidean)
         matches.each {
             println "$it.item.name: $it.rate"
-        }*/
+        }
 
         println '------------------------------------'
 
-        /*def recommendations = new Recommendation().recommend(persons.first(), persons, pearson)
+        def recommendations = new Recommendation().recommend(persons.first(), persons, euclidean)
         recommendations.each {
             println "$it.item.name: $it.rate"
-        }*/
+        }
 
-        def similarItems = new SimilarItems().similarItems(stuff, 5, pearson)
+        println '------------------------------------'
+
+        def similarItems = new SimilarItems().similarItems(stuff, 5, euclidean)
         println similarItems[stuff.first()]
+
+        println '------------------------------------'
 
         def recommendedItems = new RecommendationItems().recommendationItems(persons, persons.first(), similarItems)
         recommendedItems.each {
